@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resultado 2º Turno 2026</title>
+<meta name="description" content="Arquivo da apuração do 2º turno da eleição presidencial de 2026 (Lula × Flávio Bolsonaro) com dados oficiais do TSE.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#050506;--surface:#0b0b0e;--surface-2:#111116;--surface-3:#17171d;--border:#1c1c23;--border-2:#272730;--text:#ededf0;--text-2:#a1a1aa;--muted:#6b6b76;--lula:#ef4444;--flavio:#3b82f6;--ok:#22c55e;--radius:14px;--mono:'JetBrains Mono',ui-monospace,Consolas,monospace;--sans:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;color-scheme:dark}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{min-height:100vh;background:radial-gradient(900px 420px at 10% -8%,rgba(239,68,68,.07),transparent 60%),radial-gradient(900px 420px at 90% -8%,rgba(59,130,246,.07),transparent 60%),var(--bg);background-repeat:no-repeat}
+a{color:inherit}
+.wrap{max-width:1440px;margin:0 auto;padding:0 20px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;flex:none}
+.dot.l{background:var(--lula)}.dot.f{background:var(--flavio)}
+.topo{position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:rgba(5,5,6,.82);border-bottom:1px solid var(--border)}
+.topo .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:12px;padding-bottom:12px}
+.marca{display:flex;align-items:center;gap:12px;min-width:0}
+.marca>div{min-width:0}
+.marca>i{font-size:20px;width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:10px;background:var(--surface-2);border:1px solid var(--border-2)}
+.marca h1{font-size:15px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.marca span{color:var(--muted);font-size:12px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;border:1px solid var(--border-2);background:var(--surface);font-size:12px;color:var(--text-2);white-space:nowrap;text-decoration:none}
+a.pill:hover{border-color:var(--muted);color:var(--text)}
+main{padding:20px 0 48px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;min-width:0}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.card-h h3{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
+.card-h h3 i{color:var(--muted);font-size:15px}
+.card-h>span{color:var(--muted);font-size:12px}
+.aviso{display:flex;gap:10px;align-items:center;padding:12px 16px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text-2);font-size:13px}
+.aviso i{color:var(--muted);font-size:16px}
+.aviso b{color:var(--text)}
+.duelo{display:grid;grid-template-columns:minmax(0,1fr) 230px minmax(0,1fr);gap:16px}
+.cand{position:relative;overflow:hidden;padding:22px}
+.cand::before{content:'';position:absolute;inset:0 0 auto 0;height:3px;background:var(--cor)}
+.cand::after{content:'';position:absolute;right:-80px;top:-80px;width:260px;height:260px;border-radius:50%;background:radial-gradient(closest-side,var(--brilho),transparent);pointer-events:none}
+.cand-topo{display:flex;gap:16px;align-items:center;position:relative;z-index:1}
+.foto{position:relative;width:92px;height:92px;flex:none}
+.foto img,.foto .ini{width:100%;height:100%;object-fit:cover;object-position:50% 15%;border-radius:50%;border:3px solid var(--cor);background:var(--surface-3)}
+.foto .ini{display:grid;place-items:center;font-size:28px;font-weight:800;color:var(--text-2)}
+.foto .nu{position:absolute;right:-6px;bottom:-2px;background:var(--cor);color:#fff;font-family:var(--mono);font-weight:700;font-size:12px;padding:1px 8px;border-radius:999px;border:2px solid var(--surface)}
+.cand h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.cand .nc{color:var(--text-2);font-size:12px;margin-top:2px}
+.cand .meta{color:var(--muted);font-size:12px;display:flex;gap:6px;align-items:center;margin-top:3px}
+.badges{display:flex;gap:6px;min-height:22px;margin-bottom:6px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--surface-3);border:1px solid var(--border-2);color:var(--text)}
+.badge.eleito{background:#0f2e1a;border-color:#166534;color:#bbf7d0}
+.badge.eleito i{color:var(--ok)}
+.cand-pct{font-family:var(--mono);font-size:58px;font-weight:700;letter-spacing:-.04em;line-height:1;margin-top:20px;position:relative;z-index:1}
+.cand-pct span{font-size:24px;color:var(--text-2);margin-left:2px}
+.cand-pct small{display:block;font-family:var(--sans);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:6px}
+.cand-votos{margin-top:10px;color:var(--text-2);position:relative;z-index:1}
+.cand-votos b{color:var(--text);font-family:var(--mono);font-size:20px;font-weight:700}
+.centro{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:4px}
+.centro .vs{font-size:12px;font-weight:800;letter-spacing:.2em;color:var(--muted);width:46px;height:46px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--border-2);margin-bottom:10px}
+.centro small{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+.centro .big{font-family:var(--mono);font-size:26px;font-weight:700;letter-spacing:-.02em}
+.centro .pp{color:var(--text-2);font-size:13px;font-family:var(--mono)}
+.centro .lid{margin-top:10px;display:inline-flex;gap:7px;align-items:center;font-size:12px;color:var(--text-2);padding:5px 12px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border-2)}
+.cabo-rot{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;color:var(--text-2);margin-bottom:10px}
+.cabo-rot span{display:flex;align-items:center;gap:7px}
+.cabo-rot b{color:var(--text);font-family:var(--mono)}
+.barra{position:relative;display:flex;gap:2px;height:16px;border-radius:6px;overflow:hidden;background:var(--surface-3)}
+.barra>div{height:100%}
+.barra .bl{background:var(--lula);border-radius:6px 0 0 6px}
+.barra .bf{background:var(--flavio);border-radius:0 6px 6px 0}
+.barra .meio{position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--text);opacity:.85;transform:translateX(-1px)}
+.apur{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+.apur-pct{font-family:var(--mono);font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.apur-pct span{font-size:20px;color:var(--text-2)}
+.apur-pct small{display:block;font-family:var(--sans);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:8px}
+.prog{position:relative;height:12px;border-radius:6px;background:var(--surface-3);overflow:hidden}
+.prog>div{height:100%;background:linear-gradient(90deg,#d4d4d8,#fafafa);border-radius:6px}
+.prog-marcas{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:6px;font-family:var(--mono)}
+.apur-info{display:flex;gap:24px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--text-2)}
+.apur-info b{color:var(--text);font-family:var(--mono)}
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;min-width:0}
+.kpi small{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+.kpi small i{font-size:13px}
+.kpi b{display:block;font-family:var(--mono);font-size:20px;font-weight:700;letter-spacing:-.02em;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi em{display:block;font-style:normal;color:var(--text-2);font-size:12px;margin-top:2px}
+.grade-2{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px}
+.grade-uf{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:16px}
+.graf{position:relative;height:290px}
+.graf.peq{height:230px}
+.centro-donut{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;padding-bottom:34px}
+.centro-donut b{font-family:var(--mono);font-size:20px}
+.centro-donut small{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.07em}
+.comp{margin-top:14px}
+.comp .barra{height:10px}
+.comp .bc{background:#d4d4d8;border-radius:6px 0 0 6px}
+.comp .ba{background:#3f3f46;border-radius:0 6px 6px 0}
+.comp-rot{display:flex;justify-content:space-between;font-size:12px;color:var(--text-2);margin-bottom:8px;gap:8px}
+.comp-rot b{font-family:var(--mono);color:var(--text)}
+.mapa{display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(7,auto);gap:5px;max-width:440px;margin:0 auto}
+.tile{aspect-ratio:1;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;cursor:default;border:1px solid rgba(255,255,255,.05);transition:transform .15s,box-shadow .15s;line-height:1.15}
+.tile small{font-size:9.5px;font-weight:500;opacity:.85;font-family:var(--mono)}
+.tile:hover{transform:scale(1.08);box-shadow:0 0 0 2px var(--text);z-index:2}
+.tile.ext{border:1px dashed var(--muted)}
+.legenda-mapa{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:16px;font-size:11px;color:var(--text-2);flex-wrap:wrap}
+.legenda-mapa .grad{width:180px;height:8px;border-radius:4px;background:linear-gradient(90deg,#3b82f6,#27272f 50%,#ef4444)}
+.rolagem{overflow:auto;max-height:440px;border:1px solid var(--border);border-radius:10px}
+.tabela{width:100%;border-collapse:collapse;font-size:12.5px}
+.tabela th{position:sticky;top:0;background:var(--surface-2);color:var(--muted);font-weight:600;text-transform:uppercase;font-size:10.5px;letter-spacing:.06em;text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowrap;z-index:1}
+.tabela th.ord{cursor:pointer;user-select:none}
+.tabela th.ord:hover{color:var(--text)}
+.tabela td{padding:8px 12px;border-bottom:1px solid var(--border);white-space:nowrap}
+.tabela tr:last-child td{border-bottom:none}
+.tabela tbody tr:hover td{background:var(--surface-2)}
+.tabela .r{text-align:right}
+.tabela .num{font-size:12px}
+.tabela td.vazio-t{text-align:center;color:var(--muted);padding:28px}
+.mini{display:flex;align-items:center;gap:6px}
+.delta{color:var(--text-2);font-size:11px}
+#tip{position:fixed;pointer-events:none;background:var(--surface-3);border:1px solid var(--border-2);padding:10px 12px;border-radius:10px;font-size:12px;z-index:60;display:none;min-width:210px;box-shadow:0 12px 32px rgba(0,0,0,.6)}
+#tip h4{font-size:13px;margin-bottom:6px}
+#tip .lin{display:flex;justify-content:space-between;gap:12px;align-items:center;color:var(--text-2)}
+#tip .lin b{color:var(--text);font-family:var(--mono);font-weight:500}
+#tip .lin span{display:flex;align-items:center;gap:6px}
+#erro{display:none}
+footer{border-top:1px solid var(--border);color:var(--muted);font-size:12px}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;padding-top:18px;padding-bottom:24px;flex-wrap:wrap}
+footer a{color:var(--text-2)}
+@media (max-width:1200px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:1000px){.duelo,.grade-2,.grade-uf{grid-template-columns:minmax(0,1fr)}.centro{order:3}}
+@media (max-width:640px){.wrap{padding:0 16px}.kpis{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.kpi b{font-size:17px}.cabo-rot .muted{display:none}.cand-pct{font-size:46px}.apur{grid-template-columns:1fr;gap:14px}.marca span{display:none}.cand{padding:18px}.foto{width:76px;height:76px}.cand h2{font-size:22px}.topo .pill{display:none}}
+</style>
+</head>
+<body>
+<header class="topo">
+  <div class="wrap">
+    <div class="marca">
+      <i class="bi bi-bar-chart-line-fill"></i>
+      <div><h1>Eleição Presidencial 2026</h1><span>2º turno · Lula × Flávio Bolsonaro · dados oficiais do TSE</span></div>
+    </div>
+    <a class="pill" href="database.json" download><i class="bi bi-download"></i>database.json</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="aviso card" id="erro"><i class="bi bi-exclamation-triangle"></i><span>Não foi possível carregar o <b>database.json</b>. Abra esta página por um servidor (por exemplo, o GitHub Pages) e não direto pelo arquivo.</span></div>
+
+  <div class="aviso"><i class="bi bi-archive"></i><span>Arquivo da apuração. Última atualização do TSE: <b class="num" id="ult-tse">—</b> · <b class="num" id="ult-sec">—</b> das seções totalizadas.</span></div>
+
+  <section class="duelo">
+    <article class="card cand" id="c-lula" style="--cor:var(--lula);--brilho:rgba(239,68,68,.10)">
+      <div class="cand-topo">
+        <div class="foto"><img data-k="foto" alt="Foto de Lula"><span class="nu">13</span></div>
+        <div><div class="badges" data-k="badges"></div><h2 data-k="nome">LULA</h2><p class="nc" data-k="nc">—</p>
+          <p class="meta"><i class="bi bi-flag"></i><span data-k="partido">—</span></p>
+          <p class="meta"><i class="bi bi-person"></i><span data-k="vice">—</span></p></div>
+      </div>
+      <div class="cand-pct"><small>Votos válidos</small><b data-k="pct">0,00</b><span>%</span></div>
+      <div class="cand-votos"><b data-k="votos">0</b> votos</div>
+    </article>
+
+    <div class="card centro">
+      <div class="vs">VS</div>
+      <small>Diferença</small>
+      <div class="big" id="dif-votos">—</div>
+      <div class="pp" id="dif-pp">— p.p.</div>
+      <div class="lid" id="lid">—</div>
+    </div>
+
+    <article class="card cand" id="c-flavio" style="--cor:var(--flavio);--brilho:rgba(59,130,246,.10)">
+      <div class="cand-topo">
+        <div class="foto"><img data-k="foto" alt="Foto de Flávio Bolsonaro"><span class="nu">22</span></div>
+        <div><div class="badges" data-k="badges"></div><h2 data-k="nome">FLAVIO BOLSONARO</h2><p class="nc" data-k="nc">—</p>
+          <p class="meta"><i class="bi bi-flag"></i><span data-k="partido">—</span></p>
+          <p class="meta"><i class="bi bi-person"></i><span data-k="vice">—</span></p></div>
+      </div>
+      <div class="cand-pct"><small>Votos válidos</small><b data-k="pct">0,00</b><span>%</span></div>
+      <div class="cand-votos"><b data-k="votos">0</b> votos</div>
+    </article>
+  </section>
+
+  <section class="card">
+    <div class="cabo-rot">
+      <span><i class="dot l"></i>Lula <b id="cabo-l">0,00%</b></span>
+      <span class="muted">linha central = 50% dos votos válidos</span>
+      <span><b id="cabo-f">0,00%</b> Flávio Bolsonaro<i class="dot f"></i></span>
+    </div>
+    <div class="barra"><div class="bl" id="cabo-bl" style="width:50%"></div><div class="bf" id="cabo-bf" style="width:50%"></div><div class="meio"></div></div>
+  </section>
+
+  <section class="card apur">
+    <div class="apur-pct"><small>Seções totalizadas</small><b id="ap-pct" class="num">0,00</b><span>%</span></div>
+    <div>
+      <div class="prog"><div id="ap-bar" style="width:0%"></div></div>
+      <div class="prog-marcas"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+      <div class="apur-info">
+        <span><i class="bi bi-inbox"></i> <b id="ap-sec">0</b> de <b id="ap-sec-t">0</b> seções</span>
+        <span><i class="bi bi-people"></i> <b id="ap-ele">0</b> eleitores em seções apuradas (<b id="ap-ele-p">0,00%</b>)</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section class="grade-2">
+    <div class="card">
+      <div class="card-h"><h3><i class="bi bi-graph-up"></i>Votos válidos (%) ao longo da apuração</h3><span>eixo X: % de seções totalizadas</span></div>
+      <div class="graf"><canvas id="g-pct"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h3><i class="bi bi-pie-chart"></i>Composição dos votos</h3><span id="comp-sub">—</span></div>
+      <div class="graf peq"><canvas id="g-comp"></canvas><div class="centro-donut"><b id="donut-total">0</b><small>votos</small></div></div>
+      <div class="comp">
+        <div class="comp-rot"><span>Comparecimento <b id="cmp-c">0,00%</b></span><span>Abstenção <b id="cmp-a">0,00%</b></span></div>
+        <div class="barra"><div class="bc" id="cmp-bc" style="width:50%"></div><div class="ba" id="cmp-ba" style="width:50%"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-h"><h3><i class="bi bi-arrow-left-right"></i>Vantagem em votos (Lula − Flávio)</h3><span>acima de 0: Lula · abaixo: Flávio</span></div>
+    <div class="graf"><canvas id="g-dif"></canvas></div>
+  </section>
+
+  <section class="grade-uf">
+    <div class="card">
+      <div class="card-h"><h3><i class="bi bi-map"></i>Mapa por estado</h3><span id="uf-sub">—</span></div>
+      <div class="mapa" id="mapa"></div>
+      <div class="legenda-mapa"><span>Flávio +40 p.p.</span><span class="grad"></span><span>Lula +40 p.p.</span></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h3><i class="bi bi-table"></i>Resultado por estado</h3><span>clique no cabeçalho para ordenar</span></div>
+      <div class="rolagem">
+        <table class="tabela">
+          <thead><tr>
+            <th class="ord" data-c="uf">UF</th>
+            <th class="ord r" data-c="lula"><i class="dot l"></i> Lula</th>
+            <th class="ord r" data-c="flavio"><i class="dot f"></i> Flávio</th>
+            <th class="ord" data-c="margem">Vantagem</th>
+            <th class="ord r" data-c="comparecimento">Comparecimento</th>
+            <th class="ord r" data-c="eleitorado">Eleitorado</th>
+          </tr></thead>
+          <tbody id="t-uf"><tr><td colspan="6" class="vazio-t">Carregando…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-h"><h3><i class="bi bi-clock-history"></i>Evolução da apuração</h3><span id="h-sub">—</span></div>
+    <div class="rolagem">
+      <table class="tabela">
+        <thead><tr>
+          <th>Hora TSE</th><th class="r">Seções</th>
+          <th class="r"><i class="dot l"></i> Lula</th><th class="r"><i class="dot f"></i> Flávio</th><th class="r">Diferença</th><th class="r">Total de votos</th>
+        </tr></thead>
+        <tbody id="t-hist"><tr><td colspan="6" class="vazio-t">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><i class="bi bi-shield-check"></i> Fonte: resultados.tse.jus.br (Tribunal Superior Eleitoral)</span>
+    <span>Dados completos em <a href="database.json">database.json</a></span>
+  </div>
+</footer>
+
+<div id="tip"></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const nf = new Intl.NumberFormat('pt-BR');
+const nfc = new Intl.NumberFormat('pt-BR', { notation: 'compact', maximumFractionDigits: 1 });
+const N = (v) => nf.format(Math.round(v || 0));
+const F = (v, d = 2) => (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d });
+const P = (v, d = 2) => F(v, d) + '%';
+// Percentual de seções truncado: 99,9996% aparece como 99,99% e não como 100,00%
+const T = (v) => F(Math.floor((Number(v) || 0) * 100) / 100);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+const SQ = { lula: '280002542548', flavio: '280002551544' };
+const NUM = { lula: '13', flavio: '22' };
+const COR = { lula: '#ef4444', flavio: '#3b82f6' };
+const NOME = { lula: 'Lula', flavio: 'Flávio Bolsonaro' };
+const FOTO_TSE = 'https://resultados.tse.jus.br/oficial/ele2026/6258/fotos/br/';
+
+const GRADE = {
+  rr: [2, 1], ap: [3, 1],
+  am: [2, 2], pa: [3, 2], ma: [4, 2], ce: [5, 2], rn: [6, 2],
+  ac: [1, 3], ro: [2, 3], mt: [3, 3], to: [4, 3], pi: [5, 3], pb: [6, 3], pe: [7, 3],
+  ms: [3, 4], go: [4, 4], df: [5, 4], ba: [6, 4], al: [7, 4],
+  pr: [3, 5], sp: [4, 5], mg: [5, 5], es: [6, 5], se: [7, 5],
+  sc: [3, 6], rj: [5, 6],
+  rs: [3, 7], zz: [7, 7],
+};
+
+let DB = null;
+let ordem = { c: 'uf', d: 1 };
+
+function cand(lista, k) {
+  lista = lista || [];
+  return lista.find((c) => c.sqcand === SQ[k]) || lista.find((c) => String(c.numero) === NUM[k]) || null;
+}
+
+function hexRgb(h) { h = h.replace('#', ''); return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16)); }
+function mix(a, b, t) { const pa = hexRgb(a), pb = hexRgb(b); return 'rgb(' + pa.map((v, i) => Math.round(v + (pb[i] - v) * t)).join(',') + ')'; }
+
+// ----- Resultado -------------------------------------------------------------
+function renderCandidato(k, c, maisVotado) {
+  const card = $('c-' + k);
+  const q = (n) => card.querySelector('[data-k="' + n + '"]');
+  const img = q('foto');
+  img.onerror = () => { const d = document.createElement('div'); d.className = 'ini'; d.textContent = NUM[k]; img.replaceWith(d); };
+  img.src = FOTO_TSE + SQ[k] + '.jpeg';
+  if (!c) return;
+  q('nome').textContent = c.nomeUrna;
+  q('nc').textContent = c.nome;
+  q('partido').textContent = c.partido + ' · ' + (c.coligacao || '');
+  q('vice').textContent = c.vice ? 'Vice: ' + c.vice.nomeUrna + ' (' + c.vice.partido + ')' : '—';
+  q('pct').textContent = F(c.pct);
+  q('votos').textContent = N(c.votos);
+  let b = '';
+  if (c.eleito) b += '<span class="badge eleito"><i class="bi bi-patch-check-fill"></i>ELEITO</span>';
+  else if (maisVotado) b += '<span class="badge"><i class="bi bi-trophy"></i>Mais votado</span>';
+  if (c.situacao) b += '<span class="badge">' + esc(c.situacao) + '</span>';
+  q('badges').innerHTML = b;
+}
+
+function renderResultado() {
+  const a = DB.resultado;
+  const l = cand(a.candidatos, 'lula'), f = cand(a.candidatos, 'flavio');
+  const lv = l ? l.votos : 0, fv = f ? f.votos : 0;
+  const lp = l ? l.pct : 0, fp = f ? f.pct : 0;
+  renderCandidato('lula', l, lv > fv);
+  renderCandidato('flavio', f, fv > lv);
+
+  $('ult-tse').textContent = a.dataTSE + ' ' + a.horaTSE;
+  $('ult-sec').textContent = T(a.secoes.pct) + '%';
+  $('dif-votos').textContent = N(Math.abs(lv - fv));
+  $('dif-pp').textContent = F(Math.abs(lp - fp)) + ' p.p.';
+  const k = lv > fv ? 'lula' : fv > lv ? 'flavio' : null;
+  $('lid').innerHTML = k ? '<i class="dot ' + (k === 'lula' ? 'l' : 'f') + '"></i>' + NOME[k] + ' à frente' : 'Empate';
+
+  const soma = lp + fp;
+  $('cabo-bl').style.width = (soma ? (lp / soma) * 100 : 50) + '%';
+  $('cabo-bf').style.width = (soma ? (fp / soma) * 100 : 50) + '%';
+  $('cabo-l').textContent = P(lp);
+  $('cabo-f').textContent = P(fp);
+
+  $('ap-pct').textContent = T(a.secoes.pct);
+  $('ap-bar').style.width = Math.min(100, a.secoes.pct) + '%';
+  $('ap-sec').textContent = N(a.secoes.totalizadas);
+  $('ap-sec-t').textContent = N(a.secoes.total);
+  $('ap-ele').textContent = N(a.eleitorado.apurado);
+  $('ap-ele-p').textContent = P(a.eleitorado.pctApurado);
+
+  const e = a.eleitorado, v = a.votos;
+  const tiles = [
+    ['bi-people-fill', 'Eleitorado', N(e.total), 'eleitores aptos'],
+    ['bi-person-check', 'Comparecimento', N(e.comparecimento), P(e.pctComparecimento) + ' do eleitorado'],
+    ['bi-person-x', 'Abstenção', N(e.abstencao), P(e.pctAbstencao) + ' do eleitorado'],
+    ['bi-check2-square', 'Votos válidos', N(v.validos), P(v.pctValidos) + ' do total'],
+    ['bi-square', 'Brancos', N(v.brancos), P(v.pctBrancos) + ' do total'],
+    ['bi-x-square', 'Nulos', N(v.nulos), P(v.pctNulos) + ' do total'],
+  ];
+  $('kpis').innerHTML = tiles.map((t) => '<div class="kpi"><small><i class="bi ' + t[0] + '"></i>' + t[1] + '</small><b title="' + esc(t[2]) + '">' + t[2] + '</b><em>' + esc(t[3]) + '</em></div>').join('');
+
+  document.title = 'Lula ' + P(lp) + ' × ' + P(fp) + ' Flávio · 2º Turno 2026';
+}
+
+// ----- Gráficos --------------------------------------------------------------
+function renderGraficos() {
+  Chart.defaults.color = '#8b8b96';
+  Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+  Chart.defaults.font.size = 11;
+  Chart.defaults.borderColor = '#1c1c23';
+  Object.assign(Chart.defaults.plugins.tooltip, { backgroundColor: '#17171d', borderColor: '#272730', borderWidth: 1, padding: 10, titleColor: '#ededf0', bodyColor: '#a1a1aa', usePointStyle: true, boxPadding: 4 });
+  Chart.defaults.plugins.legend.labels.usePointStyle = true;
+  Chart.defaults.plugins.legend.labels.boxHeight = 7;
+
+  const hist = DB.historico;
+  const pontos = (k) => hist.map((h) => { const c = h.candidatos.find((x) => x.sqcand === SQ[k]) || {}; return { x: h.secoesPct, y: c.pct || 0, v: c.votos || 0, h: h.horaTSE }; });
+  const pl = pontos('lula'), pf = pontos('flavio');
+  const linha = (label, cor, data) => ({ label, data, borderColor: cor, backgroundColor: cor, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, pointHoverBorderWidth: 2, pointHoverBorderColor: '#0b0b0e', tension: 0.25 });
+  const eixoX = { type: 'linear', min: 0, max: 100, grid: { display: false }, ticks: { callback: (v) => v + '%' }, title: { display: true, text: '% de seções totalizadas', color: '#6b6b76' } };
+  const titulo = (it) => (it[0] ? it[0].raw.h + ' · ' + T(it[0].raw.x) + '% das seções' : '');
+
+  new Chart($('g-pct'), {
+    type: 'line',
+    data: { datasets: [linha('Lula', COR.lula, pl), linha('Flávio Bolsonaro', COR.flavio, pf), { label: '50%', data: [{ x: 0, y: 50 }, { x: 100, y: 50 }], borderColor: '#52525b', borderDash: [4, 4], borderWidth: 1, pointRadius: 0, pointHoverRadius: 0 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false, parsing: false,
+      interaction: { mode: 'index', intersect: false },
+      scales: { x: eixoX, y: { suggestedMin: 40, suggestedMax: 60, ticks: { callback: (v) => v + '%' } } },
+      plugins: {
+        legend: { position: 'top', align: 'start', labels: { filter: (i) => i.text !== '50%' } },
+        tooltip: { filter: (i) => i.dataset.label !== '50%', callbacks: { title: titulo, label: (i) => ' ' + i.dataset.label + ': ' + P(i.raw.y) + '  (' + N(i.raw.v) + ' votos)' } },
+      },
+    },
+  });
+
+  new Chart($('g-dif'), {
+    type: 'line',
+    data: { datasets: [{ label: 'Vantagem', data: pl.map((p, i) => ({ x: p.x, y: p.v - pf[i].v, h: p.h })), borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, tension: 0.25, borderColor: '#a1a1aa',
+      segment: { borderColor: (c) => ((c.p0.parsed.y + c.p1.parsed.y) / 2 >= 0 ? COR.lula : COR.flavio) },
+      fill: { target: 'origin', above: 'rgba(239,68,68,.12)', below: 'rgba(59,130,246,.12)' } }] },
+    options: {
+      responsive: true, maintainAspectRatio: false, parsing: false,
+      interaction: { mode: 'index', intersect: false },
+      scales: { x: eixoX, y: { ticks: { callback: (v) => (v > 0 ? 'Lula +' : v < 0 ? 'Flávio +' : '') + nfc.format(Math.abs(v)) }, grid: { color: (c) => (c.tick.value === 0 ? '#52525b' : '#1c1c23') } } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { title: titulo, label: (i) => ' ' + (i.raw.y > 0 ? 'Lula' : i.raw.y < 0 ? 'Flávio Bolsonaro' : 'Empate') + (i.raw.y ? ' à frente por ' + N(Math.abs(i.raw.y)) + ' votos' : '') } },
+      },
+    },
+  });
+
+  const a = DB.resultado;
+  const l = cand(a.candidatos, 'lula'), f = cand(a.candidatos, 'flavio');
+  new Chart($('g-comp'), {
+    type: 'doughnut',
+    data: { labels: ['Lula', 'Flávio Bolsonaro', 'Brancos', 'Nulos'], datasets: [{ data: [l ? l.votos : 0, f ? f.votos : 0, a.votos.brancos, a.votos.nulos], backgroundColor: [COR.lula, COR.flavio, '#a1a1aa', '#52525b'], borderColor: '#0b0b0e', borderWidth: 2, hoverOffset: 6 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: '72%',
+      plugins: {
+        legend: { position: 'bottom' },
+        tooltip: { callbacks: { label: (i) => { const t = i.dataset.data.reduce((s, x) => s + x, 0); return ' ' + i.label + ': ' + N(i.raw) + ' (' + P(t ? (i.raw / t) * 100 : 0) + ')'; } } },
+      },
+    },
+  });
+  $('donut-total').textContent = nfc.format(a.votos.total);
+  $('comp-sub').textContent = N(a.votos.total) + ' votos';
+  const e = a.eleitorado;
+  const t = e.comparecimento + e.abstencao;
+  $('cmp-bc').style.width = (t ? (e.comparecimento / t) * 100 : 50) + '%';
+  $('cmp-ba').style.width = (t ? (e.abstencao / t) * 100 : 50) + '%';
+  $('cmp-c').textContent = P(e.pctComparecimento) + ' · ' + N(e.comparecimento);
+  $('cmp-a').textContent = P(e.pctAbstencao) + ' · ' + N(e.abstencao);
+}
+
+// ----- Estados ---------------------------------------------------------------
+function dadosUF(e) {
+  const l = cand(e.candidatos, 'lula') || { votos: 0, pct: 0 };
+  const f = cand(e.candidatos, 'flavio') || { votos: 0, pct: 0 };
+  return { l, f, margem: l.pct - f.pct };
+}
+
+function corUF(e) {
+  if (!e) return '#18181d';
+  const d = dadosUF(e);
+  if (d.margem === 0) return '#27272f';
+  return mix('#27272f', d.margem > 0 ? COR.lula : COR.flavio, 0.3 + 0.7 * Math.min(1, Math.abs(d.margem) / 40));
+}
+
+function renderMapa() {
+  const mapa = $('mapa');
+  mapa.innerHTML = Object.entries(GRADE).map(([uf, [c, r]]) => {
+    const e = DB.estados[uf];
+    const d = e ? dadosUF(e) : null;
+    return '<div class="tile' + (uf === 'zz' ? ' ext' : '') + '" data-uf="' + uf + '" style="grid-column:' + c + ';grid-row:' + r + ';background:' + corUF(e) + '">' +
+      (uf === 'zz' ? 'EXT' : uf.toUpperCase()) + '<small>' + (d ? (d.margem >= 0 ? 'L ' : 'F ') + Math.abs(d.margem).toFixed(1) : '—') + '</small></div>';
+  }).join('');
+  mapa.querySelectorAll('.tile').forEach((t) => {
+    t.addEventListener('mouseenter', (ev) => mostrarTip(t.dataset.uf, ev));
+    t.addEventListener('mousemove', moverTip);
+    t.addEventListener('mouseleave', () => { $('tip').style.display = 'none'; });
+  });
+  const lista = Object.values(DB.estados).filter((e) => e.uf !== 'zz');
+  $('uf-sub').textContent = 'Lula venceu em ' + lista.filter((e) => e.lider === SQ.lula).length + ' · Flávio em ' + lista.filter((e) => e.lider === SQ.flavio).length + ' (27 UFs)';
+}
+
+function mostrarTip(uf, ev) {
+  const e = DB.estados[uf];
+  const tip = $('tip');
+  if (!e) tip.innerHTML = '<h4>' + uf.toUpperCase() + '</h4><div class="lin">Sem dados</div>';
+  else {
+    const d = dadosUF(e);
+    tip.innerHTML = '<h4>' + esc(e.nome) + ' (' + uf.toUpperCase() + ')</h4>' +
+      '<div class="lin"><span><i class="dot l"></i>Lula</span><b>' + P(d.l.pct) + ' · ' + N(d.l.votos) + '</b></div>' +
+      '<div class="lin"><span><i class="dot f"></i>Flávio</span><b>' + P(d.f.pct) + ' · ' + N(d.f.votos) + '</b></div>' +
+      '<div class="lin" style="margin-top:6px"><span>Comparecimento</span><b>' + P(e.eleitorado.pctComparecimento) + '</b></div>' +
+      '<div class="lin"><span>Eleitorado</span><b>' + N(e.eleitorado.total) + '</b></div>';
+  }
+  tip.style.display = 'block';
+  moverTip(ev);
+}
+
+function moverTip(ev) {
+  const tip = $('tip');
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = ev.clientX + 14, y = ev.clientY + 14;
+  if (x + w > innerWidth - 8) x = ev.clientX - w - 14;
+  if (y + h > innerHeight - 8) y = ev.clientY - h - 14;
+  tip.style.left = Math.max(8, x) + 'px';
+  tip.style.top = Math.max(8, y) + 'px';
+}
+
+function renderTabelaUF() {
+  const lista = Object.values(DB.estados).map((e) => ({ e, ...dadosUF(e) }));
+  const chave = {
+    uf: (x) => x.e.nome, lula: (x) => x.l.pct, flavio: (x) => x.f.pct, margem: (x) => x.margem,
+    comparecimento: (x) => x.e.eleitorado.pctComparecimento, eleitorado: (x) => x.e.eleitorado.total,
+  }[ordem.c];
+  lista.sort((a, b) => { const va = chave(a), vb = chave(b); return (va > vb ? 1 : va < vb ? -1 : 0) * ordem.d; });
+  $('t-uf').innerHTML = lista.map(({ e, l, f, margem }) => {
+    const vant = margem === 0 ? 'Empate'
+      : '<span class="mini"><i class="dot ' + (margem > 0 ? 'l' : 'f') + '"></i>' + (margem > 0 ? 'Lula' : 'Flávio') + ' +' + F(Math.abs(margem)) + ' p.p.</span>';
+    return '<tr>' +
+      '<td><b>' + e.uf.toUpperCase() + '</b> <span class="muted">' + esc(e.nome) + '</span></td>' +
+      '<td class="r num">' + P(l.pct) + '<div class="delta">' + N(l.votos) + '</div></td>' +
+      '<td class="r num">' + P(f.pct) + '<div class="delta">' + N(f.votos) + '</div></td>' +
+      '<td>' + vant + '</td>' +
+      '<td class="r num">' + P(e.eleitorado.pctComparecimento) + '</td>' +
+      '<td class="r num">' + N(e.eleitorado.total) + '</td>' +
+      '</tr>';
+  }).join('');
+  document.querySelectorAll('th.ord').forEach((th) => {
+    const base = th.dataset.label || (th.dataset.label = th.innerHTML);
+    th.innerHTML = base + (th.dataset.c === ordem.c ? (ordem.d === 1 ? ' <i class="bi bi-caret-up-fill"></i>' : ' <i class="bi bi-caret-down-fill"></i>') : '');
+  });
+}
+
+// ----- Evolução --------------------------------------------------------------
+function renderHistorico() {
+  const h = DB.historico;
+  $('h-sub').textContent = h.length + ' atualizações do TSE';
+  $('t-hist').innerHTML = h.slice().reverse().map((x) => {
+    const l = x.candidatos.find((c) => c.sqcand === SQ.lula) || { votos: 0, pct: 0 };
+    const f = x.candidatos.find((c) => c.sqcand === SQ.flavio) || { votos: 0, pct: 0 };
+    const lid = x.lider === SQ.lula ? '<i class="dot l"></i> ' : x.lider === SQ.flavio ? '<i class="dot f"></i> ' : '';
+    return '<tr>' +
+      '<td class="num">' + esc(x.horaTSE) + '</td>' +
+      '<td class="r num">' + T(x.secoesPct) + '%</td>' +
+      '<td class="r num">' + N(l.votos) + '<div class="delta">' + P(l.pct) + '</div></td>' +
+      '<td class="r num">' + N(f.votos) + '<div class="delta">' + P(f.pct) + '</div></td>' +
+      '<td class="r num"><span class="mini" style="justify-content:flex-end">' + lid + N(x.diferenca) + '</span></td>' +
+      '<td class="r num">' + N(x.totalVotos) + '</td>' +
+      '</tr>';
+  }).join('');
+}
+
+document.querySelectorAll('th.ord').forEach((th) => th.addEventListener('click', () => {
+  ordem = { c: th.dataset.c, d: ordem.c === th.dataset.c ? -ordem.d : th.dataset.c === 'uf' ? 1 : -1 };
+  if (DB) renderTabelaUF();
+}));
+
+fetch('database.json', { cache: 'no-cache' })
+  .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then((dados) => {
+    DB = dados;
+    renderResultado();
+    renderGraficos();
+    renderMapa();
+    renderTabelaUF();
+    renderHistorico();
+  })
+  .catch(() => { $('erro').style.display = 'flex'; });
+</script>
+</body>
+</html>
